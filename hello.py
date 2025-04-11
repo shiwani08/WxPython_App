@@ -7,20 +7,44 @@ class HelloFrame(wx.Frame):
 
         pnl = wx.Panel(self)
 
+        # title text
         st = wx.StaticText(pnl, label="Hellooo Duniya!!")
         font = st.GetFont()
         font.PointSize += 10
         font = font.Bold()
         st.SetFont(font)
 
+        # form elements
+        name_label = wx.StaticText(pnl, label = "Name: ")
+        self.name_input = wx.TextCtrl(pnl)
+
+        email_label = wx.StaticText(pnl, label = "Email: ")
+        self.email_input = wx.TextCtrl(pnl)
+
+        submit_btn = wx.Button(pnl, label = "Submit")
+        submit_btn.Bind(wx.EVT_BUTTON, self.onSubmit)        
+
+        # Layout boxsizer, along with form elements
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(st, wx.SizerFlags().Border(wx.TOP|wx.LEFT, 25))
+
+        # adding design in the name and email of the form
+        sizer.Add(name_label, flag = wx.LEFT, border = 10)
+        sizer.Add(self.name_input, flag = wx.EXPAND|wx.LEFT|wx.RIGHT, border = 10)
+
+        sizer.Add(email_label, flag = wx.LEFT, border = 10)
+        sizer.Add(self.email_input, flag = wx.EXPAND|wx.LEFT|wx.RIGHT, border = 10)
+
+        sizer.Add(submit_btn, flag = wx.ALL|wx.ALIGN_CENTER, border = 10)
+
         pnl.SetSizer(sizer)
 
         self.makeMenuBar()
-
         self.CreateStatusBar()
         self.SetStatusText("Welcome to wxpython. Ab ye saanp lega maze!!")
+
+        self.SetSize((350, 300))
+        self.Center()
 
     def makeMenuBar(self):
         fileMenu = wx.Menu()
@@ -41,6 +65,11 @@ class HelloFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnHello, helloItem)
         self.Bind(wx.EVT_MENU, self.OnExit, exitItem)
         self.Bind(wx.EVT_MENU, self.OnAbout, aboutItem)
+
+    def onSubmit(self, event):
+        name = self.name_input.GetValue()
+        email = self.email_input.GetValue()
+        wx.MessageBox(f"Name: {name} \nEmail: {email}", "Form is submitted successfully!!")
 
     def OnExit(self, event):
         self.Close(True)
