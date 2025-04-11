@@ -7,6 +7,18 @@ class HelloFrame(wx.Frame):
 
         pnl = wx.Panel(self)
 
+        # Initialize UI (form and labels)
+        self.InitUI(pnl)
+
+        # Create a menu bar
+        self.makeMenuBar()
+        self.CreateStatusBar()
+        self.SetStatusText("Welcome to wxpython. Ab ye saanp lega maze!!")
+
+        self.SetSize((400, 350))
+        self.Center()
+
+    def InitUI(self, pnl):   
         # title text
         st = wx.StaticText(pnl, label="Hellooo Duniya!!")
         font = st.GetFont()
@@ -39,19 +51,25 @@ class HelloFrame(wx.Frame):
 
         pnl.SetSizer(sizer)
 
-        self.makeMenuBar()
-        self.CreateStatusBar()
-        self.SetStatusText("Welcome to wxpython. Ab ye saanp lega maze!!")
-
-        self.SetSize((350, 300))
-        self.Center()
-
     def makeMenuBar(self):
         fileMenu = wx.Menu()
-        helloItem = fileMenu.Append(-1, "&Hello...\tCtrl-H","Help string shown in the status bar for this menu item")
+        fileMenu.Append(wx.ID_NEW, '&New')
+        fileMenu.Append(wx.ID_OPEN, '&Open')
+        fileMenu.Append(wx.ID_SAVE, '&Save')
         fileMenu.AppendSeparator()
 
-        exitItem = fileMenu.Append(wx.ID_EXIT)
+        # creating a submenu under Import
+        imp = wx.Menu()
+        imp.Append(wx.ID_ANY, 'Import bookmarks')
+        imp.Append(wx.ID_ANY, 'Import favorites')
+        imp.Append(wx.ID_ANY, 'Import data')
+        fileMenu.AppendSubMenu(imp, 'I&mport')
+
+        helloItem = fileMenu.Append(-1, "&Hello...\tCtrl+H","Help string shown in the status bar for this menu item")
+        fileMenu.AppendSeparator()
+
+        exitItem = wx.MenuItem(fileMenu, wx.ID_EXIT, '&Quit \tCtrl+W')
+        fileMenu.Append(exitItem)
 
         helpMenu = wx.Menu()
         aboutItem = helpMenu.Append(wx.ID_ABOUT)
